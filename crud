@@ -1,0 +1,274 @@
+import sys
+last_name = None
+company = None
+email = None
+position = None
+name = None
+command = None
+command_update = None 
+clients = [
+	{
+		"name": "Alyanna",
+		"last name": "Roa",
+		"company": "l&a boots",
+		"email": "alyanna@la.com",
+		"position": "C.M.O"
+	},
+	{
+		"name": "Edinson",
+		"last name": "Requena",
+		"company": "valve",
+		"email": "requena@valve.com",
+		"position": "Software engineer"
+	},
+	{
+		"name": "Angel",
+		"last name": "Verde",
+		"company": "Google",
+		"email": "angel@google.com",
+		"position": "Data engineer"		
+	},
+	{
+		"name": "Takuma",
+		"last name": "Zato",
+		"company": "Google",
+		"email": "Zato@google.com",
+		"position": "Data engineer"		
+	}
+
+]
+
+def create_client(client):
+    global clients
+
+    if client not in clients:
+    	clients.append(client)
+
+    else:
+        print(f"Client {client} already in client's list")
+
+
+def list_clients():
+    print('uid |  name  |  last name  | company  | email  | position ')
+    print('*' * 50)
+
+    for idx, client in enumerate(clients):
+        print('{uid} | {name} |  {last_name} | {company} | {email} | {position}'.format(
+            uid=idx, 
+            name=client['name'],
+            last_name=client['last name'], 
+            company=client['company'], 
+            email=client['email'], 
+            position=client['position']))
+
+
+def update_client(client_id,updated_client):
+	global clients
+
+	if len(clients) - 1 >= client_id:
+		clients[client_id] = updated_client
+
+
+def _get_update_client(update_field):
+	global command_update
+	global name
+	global last_name
+	global company
+	global email
+	global position
+
+	while not command_update:
+		command_update = input("What is the client field that you want update? ")
+
+	command_update.upper()
+
+	if command_update == "N":
+		while not name:
+			name = input("What is the new name? ")
+		return name
+
+	elif command_update == "L":
+		while not last_name:
+			last_name = input("What is the new last name? ")
+		return last_name
+
+	elif command_update == "C":
+		while not company:
+			company = input("What is the new company? ")
+		return company
+
+	elif command_update == "E":
+		while not email:
+			email = input("What is the new email? ")
+		return email
+
+	elif command_update == "P":
+		while not position:
+			position = input("What is the new position? ")
+		return position
+
+	else:
+		print("Invalid command, try again")
+
+
+def delete_client(client_id):
+    global clients
+
+    for idx, client in enumerate(clients):
+        if idx == client_id:
+            del clients[idx] 
+            break
+
+
+def search_client(client_name):
+    for client in clients:
+        if client['name'] != client_name:
+            continue
+        else:
+            return True
+
+
+def _get_client_field(field_place):
+    field = None
+
+    while not field:
+        field = input(f"what is the client {field_place}? ")
+    
+    return field
+
+
+def _client_field():
+	global command_update
+	global command
+	global clients
+	client = {}
+
+	if command == "C":
+		client = {
+			"name": _get_client_field("name"),
+			"last name": _get_client_field("last name"),
+			"company": _get_client_field("company"),
+			"email": _get_client_field("email"),
+			"position": _get_client_field("position"),
+		}
+		return client
+	elif command == "U":
+		_get_update_client(clients[client_id])
+		if command_update == "N":
+			client = {
+				"name": name,
+				"last name": client,
+				"company": client,
+				"email": client,
+				"position": client,
+			}
+			return client
+		elif command_update == "L":
+			client = {
+				"name": client,
+				"last name": last_name,
+				"company": client,
+				"email": client,
+				"position": client,
+			}
+			return client
+		elif command_update == "C":
+			client = {
+				"name": client,
+				"last name": client,
+				"company": company,
+				"email": client,
+				"position": client,
+			}
+			return client
+		elif command_update == "E":
+			client = {
+				"name": client,
+				"last name": client,
+				"company": client,
+				"email": email,
+				"position": client,
+			}
+			return client
+		elif command_update == "P":
+			client = {
+				"name": client,
+				"last name": clientnt,
+				"company": client,
+				"email": client,
+				"position": position,
+			}
+			return client
+		else:
+			print("Invalid command, please try again")
+
+
+def _not_in_clients(client_name):
+	global clients
+
+	if client_name not in clients:
+		 print(client_name, "is not in client's list")
+
+
+def _print_welcome():
+	print("*"*20 ,"WELCOME TO THE DATA CENTER", "*"*20)
+	print("What would yo like to do today?")
+	print("[C]reate client")
+	print("[R]ead client")
+	print("[U]pdate client")
+	print("[D]elete client")
+	print("[S]earch client")
+
+
+if __name__ == '__main__':
+	_print_welcome()
+
+	command = input()
+	command = command.upper()
+
+
+	if command == "C":
+		client = _client_field()
+
+		create_client(client)
+		list_clients()
+
+	elif command == "R":
+		list_clients()
+
+	elif command == "D":
+		list_clients()
+		print("-"*45)
+		client_id = int(_get_client_field('id'))
+
+		delete_client(client_id)
+		print("-"*45)
+		list_clients()
+
+	elif command == "U":
+		list_clients()
+		client_id = int(input("What is the client id "))
+		print("[N]ame client")
+		print("[L]ast client")
+		print("[C]ompany client")
+		print("[E]mail client")
+		print("[P]osition client")
+		updated_client = _client_field()
+		
+		update_client(client_id,updated_client)
+		list_clients()
+
+	elif command == "S":
+		client_name = _get_client_field('name')
+		found = search_client(client_name)
+        
+		if found:
+			print('The client is in the client\'s list')
+		else:
+			print('The client: {} is not in our client\'s list'.format(client_name))
+
+	elif command == "E":
+		_exit(exit)
+
+	else:
+		print("Invalid command, try again")
